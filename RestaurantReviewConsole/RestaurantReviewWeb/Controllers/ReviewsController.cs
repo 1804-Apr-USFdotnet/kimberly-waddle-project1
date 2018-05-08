@@ -48,61 +48,48 @@ namespace RestaurantReviewWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateReview([Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]LibReview newReview)
+        public ActionResult CreateReview(/*[Bind(Include = "ID, RestID, Reviewer, Text, Rating")]*/LibReview newReview)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    controllerManager.AddReviewToDB(newReview);
-
-                    return RedirectToAction("Index", "Restaurants");
-                }
-                catch
-                {
-                    return View("Index");
-                }
+                controllerManager.AddReviewToDB(newReview);
+                controllerManager.CalculateAvgRating(controllerManager.SearchResByID(newReview.RestID));
+                return RedirectToAction("Index", "Restaurants");
             }
-
-            return View("Index");
+            catch
+            {
+                return View("Index");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteReview([Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]LibReview delReview)
+        public ActionResult DeleteReview(/*[Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]*/LibReview delReview)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    controllerManager.DelReviewFromDB(delReview.ID);
-                    return RedirectToAction("Index", "Restaurants");
-                }
-                catch
-                {
-                    return View("Index");
-                }
+                controllerManager.DelReviewFromDB(delReview.ID);
+                return RedirectToAction("Index", "Restaurants");
             }
-            return View("Index");
+            catch
+            {
+                return View("Index");
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditReview([Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]LibReview editReview)
+        public ActionResult EditReview(/*[Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]*/LibReview editReview)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    controllerManager.EditReview(editReview);
-                    return RedirectToAction("Index", "Restaurants");
-                }
-                catch
-                {
-                    return View("Index");
-                }
+                controllerManager.EditReview(editReview);
+                return RedirectToAction("Index", "Restaurants");
             }
-            return View("Index");
+            catch
+            {
+                return View("Index");
+            }
         }
     }
 }

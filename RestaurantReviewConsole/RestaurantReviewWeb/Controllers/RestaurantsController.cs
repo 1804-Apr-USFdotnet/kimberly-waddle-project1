@@ -88,64 +88,51 @@ namespace RestaurantReviewWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateRestaurant([Bind(Include = "ID, Name, Address, City, Country, ZIP")]LibRestaurant restaurant)
+        public ActionResult CreateRestaurant(/*[Bind(Include = "ID, Name, Address, City, Country, ZIP")]*/LibRestaurant restaurant)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    webManager.AddRestaurantToDB(restaurant);
-                    return RedirectToAction("Index");
-                }
-                catch
-                {
-                    return View();
-                }
+                webManager.AddRestaurantToDB(restaurant);
+                return RedirectToAction("Index");
             }
-            return View("Index");
+            catch
+            {
+                return View();
+            }
+    }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(/*[Bind(Include = "ID, Name, Address, City, Country, ZIP")]*/int id, LibRestaurant newRestaurant)
+        {
+            try
+            {
+                var oldRestaurant = restaurants.First(x => x.ID == id);
+
+                webManager.UpdateRestaurantInDB(newRestaurant);
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID, Name, Address, City, Country, ZIP")]int id, LibRestaurant newRestaurant)
+        public ActionResult DeleteRestaurant(/*[Bind(Include = "ID, Name, Address, City, Country, ZIP")]*/LibRestaurant delete)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var oldRestaurant = restaurants.First(x => x.ID == id);
+                webManager.DeleteRestaurantFromDB(delete.ID);
 
-                    webManager.UpdateRestaurantInDB(newRestaurant);
-
-                    return RedirectToAction("Index");
-                }
-                catch
-                {
-                    return View();
-                }
+                return RedirectToAction("Index");
             }
-
-            return View("Index");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteRestaurant([Bind(Include = "ID, Name, Address, City, Country, ZIP")]LibRestaurant delete)
-        {
-            if (ModelState.IsValid)
+            catch
             {
-                try
-                {
-                    webManager.DeleteRestaurantFromDB(delete.ID);
-
-                    return RedirectToAction("Index");
-                }
-                catch
-                {
-                    return View();
-                }
+                return View();
             }
-            return View("Index");
         }
     }
 }

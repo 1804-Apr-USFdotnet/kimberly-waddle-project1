@@ -180,7 +180,7 @@ namespace RestaurantReviewLibrary
 
             //return sortedString.ToString();
         }
-        private double CalculateAvgRating(LibRestaurant rateRestaurant)
+        public double CalculateAvgRating(LibRestaurant rateRestaurant)
         {
             double runningTotal = 0.0;
             double avg = 0.0;
