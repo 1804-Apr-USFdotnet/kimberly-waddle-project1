@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 
 namespace RestaurantReviewLibrary.Models
 {
-    public class Review
+    public class LibReview
     {
-        public int ID { get; }
+        public int ID { get; set; }
         public int RestID { get; set; }
         public string Reviewer { get; set; }
         public string Text { get; set; }
         public double Rating { get; set; }
 
-        public Review(string submitter, string newText, double rating)
+        public LibReview()
+        {
+
+        }
+
+        public LibReview(string submitter, string newText, double rating)
         {
             Reviewer = submitter;
             Text = newText;

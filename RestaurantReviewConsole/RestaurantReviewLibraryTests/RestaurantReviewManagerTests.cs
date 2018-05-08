@@ -15,7 +15,7 @@ namespace RestaurantReviewLibrary.Tests
     {
         RestaurantReviewManager testManager = new RestaurantReviewManager();
 
-        Models.Restaurant test1 = new Models.Restaurant
+        LibRestaurant test1 = new Models.LibRestaurant
         {
             ID = 1,
             Name = "McDonald's",
@@ -25,7 +25,7 @@ namespace RestaurantReviewLibrary.Tests
             ZIP = "67890",
             AvgRating = 1.2
         };
-        Models.Restaurant test2 = new Models.Restaurant
+        LibRestaurant test2 = new Models.LibRestaurant
         {
             ID = 2,
             Name = "Carrabba's",
@@ -35,7 +35,7 @@ namespace RestaurantReviewLibrary.Tests
             ZIP = "12345",
             AvgRating = 5.0
         };
-        Models.Restaurant test3 = new Models.Restaurant
+        LibRestaurant test3 = new Models.LibRestaurant
         {
             ID = 3,
             Name = "Cruickshank Group",
@@ -45,7 +45,7 @@ namespace RestaurantReviewLibrary.Tests
             ZIP = "49008",
             AvgRating = 3.0
         };
-        Models.Restaurant test4 = new Models.Restaurant
+        LibRestaurant test4 = new Models.LibRestaurant
         {
             ID = 4,
             Name = "Schuster-Bogisich",
@@ -55,7 +55,7 @@ namespace RestaurantReviewLibrary.Tests
             ZIP = "20-960",
             AvgRating = 2.4
         };
-        Models.Restaurant test5 = new Models.Restaurant
+        LibRestaurant test5 = new Models.LibRestaurant
         {
             ID = 5,
             Name = "Witting, Corkery and Wiza",
@@ -65,7 +65,7 @@ namespace RestaurantReviewLibrary.Tests
             ZIP = "1128",
             AvgRating = 1.8
         };
-        Models.Restaurant test6 = new Models.Restaurant
+        LibRestaurant test6 = new Models.LibRestaurant
         {
             ID = 6,
             Name = "Dickens Group",
@@ -80,7 +80,7 @@ namespace RestaurantReviewLibrary.Tests
         public void SortByRatingTestAscending()
         {
             string order = "asc";
-            List<Models.Restaurant> testRestaurants = new List<Models.Restaurant>();
+            List<Models.LibRestaurant> testRestaurants = new List<Models.LibRestaurant>();
 
             testRestaurants.Add(test1);
             testRestaurants.Add(test2);
@@ -90,15 +90,15 @@ namespace RestaurantReviewLibrary.Tests
             testRestaurants.Add(test6);
 
             int expected = testRestaurants[0].ID;
-            List<RestaurantReviewData.Restaurant> convertedList = new List<RestaurantReviewData.Restaurant>();
-            foreach(Models.Restaurant mr in testRestaurants)
+            List<RestaurantReviewLibrary.Models.LibRestaurant> convertedList = new List<RestaurantReviewLibrary.Models.LibRestaurant>();
+            foreach(Models.LibRestaurant mr in testRestaurants)
             {
-                convertedList.Add(ModelConverter.ResObjToDB(mr));
+                convertedList.Add(mr);
             }
             List<RestaurantReviewData.Restaurant> expectedList = new List<RestaurantReviewData.Restaurant>();
-            foreach(RestaurantReviewData.Restaurant dbr in testManager.SortByRating(order, convertedList))
+            foreach(RestaurantReviewLibrary.Models.LibRestaurant dbr in testManager.SortByRating(order, convertedList))
             {
-                expectedList.Add(dbr);
+                expectedList.Add(ModelConverter.ResObjToDB(dbr));
             }
             int actual = expectedList[0].ID;
 
@@ -110,64 +110,7 @@ namespace RestaurantReviewLibrary.Tests
         public void SortByRatingTestDescending()
         {
             string order = "descending";
-            List<Models.Restaurant> testRestaurants = new List<Models.Restaurant>();
-
-            testRestaurants.Add(test1);
-            testRestaurants.Add(test2);
-            testRestaurants.Add(test3);
-            testRestaurants.Add(test4);
-            testRestaurants.Add(test5);
-            testRestaurants.Add(test6);
-
-            int expected = testRestaurants[1].ID;
-            List<RestaurantReviewData.Restaurant> convertedList = new List<RestaurantReviewData.Restaurant>();
-            foreach (Models.Restaurant mr in testRestaurants)
-            {
-                convertedList.Add(ModelConverter.ResObjToDB(mr));
-            }
-            List<RestaurantReviewData.Restaurant> expectedList = new List<RestaurantReviewData.Restaurant>();
-            foreach (RestaurantReviewData.Restaurant dbr in testManager.SortByRating(order, convertedList))
-            {
-                expectedList.Add(dbr);
-            }
-            int actual = expectedList[0].ID;
-
-            Assert.AreEqual(expected, actual);
-        }
-        [TestMethod]
-        public void SortByNameTestAscending()
-        {
-            string order = "asc";
-            List<Models.Restaurant> testRestaurants = new List<Models.Restaurant>();
-
-            testRestaurants.Add(test1);
-            testRestaurants.Add(test2);
-            testRestaurants.Add(test3);
-            testRestaurants.Add(test4);
-            testRestaurants.Add(test5);
-            testRestaurants.Add(test6);
-
-            int expected = testRestaurants[1].ID;
-            List<RestaurantReviewData.Restaurant> convertedList = new List<RestaurantReviewData.Restaurant>();
-            foreach (Models.Restaurant mr in testRestaurants)
-            {
-                convertedList.Add(ModelConverter.ResObjToDB(mr));
-            }
-            List<RestaurantReviewData.Restaurant> expectedList = new List<RestaurantReviewData.Restaurant>();
-            foreach (RestaurantReviewData.Restaurant dbr in testManager.SortByName(order, convertedList))
-            {
-                expectedList.Add(dbr);
-            }
-            int actual = expectedList[0].ID;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod]
-        public void SortByNameTestDescending()
-        {
-            string order = "descending";
-            List<Models.Restaurant> testRestaurants = new List<Models.Restaurant>();
+            List<LibRestaurant> testRestaurants = new List<LibRestaurant>();
 
             testRestaurants.Add(test1);
             testRestaurants.Add(test2);
@@ -177,17 +120,59 @@ namespace RestaurantReviewLibrary.Tests
             testRestaurants.Add(test6);
 
             int expected = testRestaurants[4].ID;
-            List<RestaurantReviewData.Restaurant> convertedList = new List<RestaurantReviewData.Restaurant>();
-            foreach (Models.Restaurant mr in testRestaurants)
+            List<LibRestaurant> sortedList = new List<LibRestaurant>();
+            foreach (LibRestaurant dbr in testManager.SortByRating(order, testRestaurants))
             {
-                convertedList.Add(ModelConverter.ResObjToDB(mr));
+                sortedList.Add(dbr);
             }
-            List<RestaurantReviewData.Restaurant> expectedList = new List<RestaurantReviewData.Restaurant>();
-            foreach (RestaurantReviewData.Restaurant dbr in testManager.SortByName(order, convertedList))
+            int actual = sortedList[0].ID;
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
+        public void SortByNameTestAscending()
+        {
+            string order = "ascending";
+            List<LibRestaurant> testRestaurants = new List<LibRestaurant>();
+
+            testRestaurants.Add(test1);
+            testRestaurants.Add(test2);
+            testRestaurants.Add(test3);
+            testRestaurants.Add(test4);
+            testRestaurants.Add(test5);
+            testRestaurants.Add(test6);
+
+            int expected = testRestaurants[4].ID;
+            List<LibRestaurant> sortedList = new List<LibRestaurant>();
+            foreach (LibRestaurant dbr in testManager.SortByName(order, testRestaurants))
             {
-                expectedList.Add(dbr);
+                sortedList.Add(dbr);
             }
-            int actual = expectedList[0].ID;
+            int actual = sortedList[0].ID;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SortByNameTestDescending()
+        {
+            string order = "descending";
+            List<LibRestaurant> testRestaurants = new List<LibRestaurant>();
+
+            testRestaurants.Add(test1);
+            testRestaurants.Add(test2);
+            testRestaurants.Add(test3);
+            testRestaurants.Add(test4);
+            testRestaurants.Add(test5);
+            testRestaurants.Add(test6);
+
+            int expected = testRestaurants[4].ID;
+            List<LibRestaurant> sortedList = new List<LibRestaurant>();
+            foreach(LibRestaurant dbr in testManager.SortByName(order, testRestaurants))
+            {
+                sortedList.Add(dbr);
+            }
+            int actual = sortedList[0].ID;
 
             Assert.AreEqual(expected, actual);
         }
@@ -195,7 +180,7 @@ namespace RestaurantReviewLibrary.Tests
         [TestMethod]
         public void SerializerTest()
         {
-            List<Models.Restaurant> restaurantList = new List<Models.Restaurant>();
+            List<Models.LibRestaurant> restaurantList = new List<Models.LibRestaurant>();
             restaurantList.Add(test1);
             restaurantList.Add(test2);
             restaurantList.Add(test3);
@@ -203,7 +188,7 @@ namespace RestaurantReviewLibrary.Tests
             restaurantList.Add(test5);
             restaurantList.Add(test6);
 
-            Serializer.SerializeObj<Models.Restaurant>(restaurantList, "test.txt", true);
+            Serializer.SerializeObj<Models.LibRestaurant>(restaurantList, "test.txt", true);
         }
 
         [TestMethod]
@@ -212,9 +197,9 @@ namespace RestaurantReviewLibrary.Tests
             string fileName = "test.txt";
             string actualResult;
             string expectedResult = "Name: shitbees\nAddress: 123 st\nAverage Rating: 0";
-            List<Models.Restaurant> restaurants = new List<Models.Restaurant>();
+            List<Models.LibRestaurant> restaurants = new List<Models.LibRestaurant>();
 
-            restaurants = Serializer.DeserializeObj<Models.Restaurant>(fileName);
+            restaurants = Serializer.DeserializeObj<Models.LibRestaurant>(fileName);
             actualResult = restaurants[0].ToString();
 
             Assert.AreEqual(expectedResult, actualResult);

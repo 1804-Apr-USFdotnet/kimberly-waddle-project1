@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Kimi\source\Revature\RestaurantReviewConsole\RestaurantReviewData\RestaurantReviewDBModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\revature\kimberly-waddle-project1\RestaurantReviewConsole\RestaurantReviewData\RestaurantReviewDBModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

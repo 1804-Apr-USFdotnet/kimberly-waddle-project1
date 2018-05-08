@@ -11,9 +11,9 @@ namespace RestaurantReviewLibrary
 {
     public static class ModelConverter
     {
-        public static Models.Restaurant DBToResObject(RestaurantReviewData.Restaurant DBRestaurant)
+        public static LibRestaurant DBToResObject(Restaurant DBRestaurant)
         {
-            Models.Restaurant restObj = new Models.Restaurant()
+            LibRestaurant restObj = new LibRestaurant()
             {
                 ID = DBRestaurant.ID,
                 Name = DBRestaurant.Name,
@@ -21,19 +21,19 @@ namespace RestaurantReviewLibrary
                 City = DBRestaurant.City,
                 Country = DBRestaurant.Country,
                 ZIP = DBRestaurant.ZIP,
-                AvgRating = (double)DBRestaurant.AvgRating,
-                Reviews = new List<Models.Review>()
+                AvgRating = (double?)DBRestaurant.AvgRating ?? 0.0,
+                Reviews = new List<LibReview>()
             };
-            foreach (RestaurantReviewData.Review r in DBRestaurant.Reviews)
+            foreach (Review r in DBRestaurant.Reviews)
             {
                 restObj.Reviews.Add(DBToRevObj(r));
             }
             return restObj;
         }
 
-        public static RestaurantReviewData.Restaurant ResObjToDB(Models.Restaurant objRest)
+        public static Restaurant ResObjToDB(LibRestaurant objRest)
         {
-            RestaurantReviewData.Restaurant DBRest = new RestaurantReviewData.Restaurant()
+            Restaurant DBRest = new Restaurant()
             {
                 ID = objRest.ID,
                 Name = objRest.Name,
@@ -42,21 +42,22 @@ namespace RestaurantReviewLibrary
                 Country = objRest.Country,
                 ZIP = objRest.ZIP,
                 AvgRating = objRest.AvgRating,
-                Reviews = new List<RestaurantReviewData.Review>()
+                Reviews = new List<Review>()
             };
-            foreach (Models.Review r in objRest.Reviews)
+            foreach (Models.LibReview r in objRest.Reviews)
             {
                 DBRest.Reviews.Add(RevObjToDB(r));
             }
             return DBRest;
         }
 
-        public static Models.Review DBToRevObj(RestaurantReviewData.Review DBRev)
+        public static LibReview DBToRevObj(Review DBRev)
         {
-            Models.Review newReview = new Models.Review(DBRev.Reviewer, DBRev.Text, DBRev.Rating)
+            LibReview newReview = new LibReview(DBRev.Reviewer, DBRev.Text, DBRev.Rating)
             {
+                ID = DBRev.ID,
                 Reviewer = DBRev.Reviewer,
-                Text = DBRev.Reviewer,
+                Text = DBRev.Text,
                 Rating = DBRev.Rating,
                 RestID = DBRev.RestID
             };
@@ -64,14 +65,15 @@ namespace RestaurantReviewLibrary
             return newReview;
         }
 
-        public static RestaurantReviewData.Review RevObjToDB(Models.Review revObj)
+        public static Review RevObjToDB(LibReview revObj)
         {
-            RestaurantReviewData.Review addReview = new RestaurantReviewData.Review()
+            Review addReview = new Review()
             {
                 ID = revObj.ID,
+                RestID = revObj.RestID,
                 Reviewer = revObj.Reviewer,
                 Text = revObj.Text,
-                Rating = revObj.Rating,
+                Rating = revObj.Rating
             };
 
             return addReview;

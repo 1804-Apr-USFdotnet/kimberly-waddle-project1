@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Global Eats</h1>
+    <p class="lead">Welcome to Global Eats! We collected information on twenty restaurants that don't exist!</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>View Our Restaurants</h2>
+        <p>
+            Have a look at all twenty restaurants we&acute;ve collected data on!
+        </p>
+        <p>@Html.ActionLink("Go Now!", "Index", "Restaurants")</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Learn More About Us!</h2>
+        <p>This page will tell you all about our company and our mission. It's really quite interesting, we suggest taking a look.</p>
+        <p>@Html.ActionLink("Go Now!", "About", "Home")</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Contact Us!</h2>
+        <p>Got a problem? Talk to Sam.</p>
+        <p>@Html.ActionLink("Go Now!", "Contact", "Home")</p>
+    </div>
+</div>

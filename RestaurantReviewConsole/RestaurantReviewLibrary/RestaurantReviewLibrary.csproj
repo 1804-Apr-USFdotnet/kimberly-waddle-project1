@@ -46,8 +46,8 @@
   <ItemGroup>
     <Compile Include="Interfaces\IReviewable.cs" />
     <Compile Include="ModelConverter.cs" />
-    <Compile Include="Models\Restaurant.cs" />
-    <Compile Include="Models\Review.cs" />
+    <Compile Include="Models\LibRestaurant.cs" />
+    <Compile Include="Models\LibReview.cs" />
     <Compile Include="RestaurantReviewManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializer.cs" />

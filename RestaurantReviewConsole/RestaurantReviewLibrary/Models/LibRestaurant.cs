@@ -8,7 +8,7 @@ using RestaurantReviewLibrary.Interfaces;
 
 namespace RestaurantReviewLibrary.Models
 {
-    public class Restaurant : IReviewable
+    public class LibRestaurant : IReviewable
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -16,20 +16,30 @@ namespace RestaurantReviewLibrary.Models
         public string City { get; set; }
         public string Country { get; set; }
         public string ZIP { get; set; }
-        public double AvgRating { get; set; }
+        public double? AvgRating { get; set; }
 
-        public List<Review> Reviews = new List<Review>();
+        public List<LibReview> Reviews;
 
-        public void AddReview(Review newReview)
+        public LibRestaurant()
+        {
+            Reviews = new List<LibReview>();
+        }
+
+        public void AddReview(LibReview newReview)
         {
             Reviews.Add(newReview);
+        }
+
+        public List<LibReview> RestaurantReviews()
+        {
+            return Reviews;
         }
 
         public double CalculateAverageRating()
         {
             double runningTotal = 0.0;
             double avg = 0.0;
-            foreach(Review r in Reviews)
+            foreach(LibReview r in Reviews)
             {
                 runningTotal += r.Rating;
             }
