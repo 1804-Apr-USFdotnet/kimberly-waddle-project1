@@ -47,26 +47,62 @@ namespace RestaurantReviewWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateReview(LibReview newReview)
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateReview([Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]LibReview newReview)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    controllerManager.AddReviewToDB(newReview);
 
-            controllerManager.AddReviewToDB(newReview);
+                    return RedirectToAction("Index", "Restaurants");
+                }
+                catch
+                {
+                    return View("Index");
+                }
+            }
 
-            return RedirectToAction("Index", "Restaurants");
+            return View("Index");
         }
 
         [HttpPost]
-        public ActionResult DeleteReview(LibReview delReview)
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteReview([Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]LibReview delReview)
         {
-            controllerManager.DelReviewFromDB(delReview.ID);
-            return RedirectToAction("Index", "Restaurants");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    controllerManager.DelReviewFromDB(delReview.ID);
+                    return RedirectToAction("Index", "Restaurants");
+                }
+                catch
+                {
+                    return View("Index");
+                }
+            }
+            return View("Index");
         }
 
         [HttpPost]
-        public ActionResult EditReview(LibReview editReview)
+        [ValidateAntiForgeryToken]
+        public ActionResult EditReview([Bind(Include = "ID, RestID, Reviewer, Text, AvgRating")]LibReview editReview)
         {
-            controllerManager.EditReview(editReview);
-            return RedirectToAction("Index", "Restaurants");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    controllerManager.EditReview(editReview);
+                    return RedirectToAction("Index", "Restaurants");
+                }
+                catch
+                {
+                    return View("Index");
+                }
+            }
+            return View("Index");
         }
     }
 }

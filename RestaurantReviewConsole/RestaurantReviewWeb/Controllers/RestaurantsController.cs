@@ -37,7 +37,7 @@ namespace RestaurantReviewWeb.Controllers
 
         public ActionResult DeleteRestaurant(int id)
         {
-            return View(restaurants.First(x => x.ID == id));
+            return View(webManager.PrintRestaurants().First(x => x.ID == id));
         }
 
         public ActionResult Edit(int ID)
@@ -87,50 +87,65 @@ namespace RestaurantReviewWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateRestaurant(LibRestaurant restaurant)
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateRestaurant([Bind(Include = "ID, Name, Address, City, Country, ZIP")]LibRestaurant restaurant)
         {
-            try
+            if (ModelState.IsValid)
             {
-                webManager.AddRestaurantToDB(restaurant);
-                return RedirectToAction("Index");
+                try
+                {
+                    webManager.AddRestaurantToDB(restaurant);
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View();
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View("Index");
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, LibRestaurant newRestaurant)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "ID, Name, Address, City, Country, ZIP")]int id, LibRestaurant newRestaurant)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var oldRestaurant = restaurants.First(x => x.ID == id);
+                try
+                {
+                    var oldRestaurant = restaurants.First(x => x.ID == id);
 
-                webManager.UpdateRestaurantInDB(newRestaurant);
+                    webManager.UpdateRestaurantInDB(newRestaurant);
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View();
+                }
             }
-            catch
-            {
-                return View();
-            }
+
+            return View("Index");
         }
 
         [HttpPost]
-        public ActionResult DeleteRestaurant(LibRestaurant delete)
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRestaurant([Bind(Include = "ID, Name, Address, City, Country, ZIP")]LibRestaurant delete)
         {
-            try
+            if (ModelState.IsValid)
             {
+                try
+                {
+                    webManager.DeleteRestaurantFromDB(delete.ID);
 
-                webManager.DeleteRestaurantFromDB(delete.ID);
-
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View();
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View("Index");
         }
     }
 }
